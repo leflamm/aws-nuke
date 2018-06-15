@@ -177,7 +177,7 @@ func (n *Nuke) Filter(item *Item) {
 	for _, filter := range filters {
 		var value string
 
-		propResource, ok := item.Resource.(resources.Property)
+		propResource, ok := item.Resource.(resources.ResourcePropertyGetter)
 
 		if filter.Property == "" {
 			value = item.Resource.String()

@@ -53,7 +53,7 @@ func (p Properties) Set(key string, value interface{}) Properties {
 	return p
 }
 
-type Property interface {
+type ResourcePropertyGetter interface {
 	Resource
 	Properties() Properties
 }
