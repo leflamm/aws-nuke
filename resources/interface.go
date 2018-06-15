@@ -53,6 +53,15 @@ func (p Properties) Set(key string, value interface{}) Properties {
 	return p
 }
 
+func (p Properties) Get(key string) string {
+	value, ok := p[key]
+	if !ok {
+		return ""
+	}
+
+	return value
+}
+
 type ResourcePropertyGetter interface {
 	Resource
 	Properties() Properties
