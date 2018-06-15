@@ -175,7 +175,25 @@ func (n *Nuke) Filter(item *Item) {
 	}
 
 	for _, filter := range filters {
-		match, err := filter.Match(item.Resource.String())
+		var value string
+
+		propResource, ok := item.Resource.(resources.Property)
+
+		if filter.Property == "" {
+			value = item.Resource.String()
+		} else if ok {
+			value, ok = propResource.Properties()[filter.Property]
+			if !ok {
+				value = ""
+			}
+		} else {
+			log.Errorf("failed to apply filter: %T does not support custom properties", item.Resource)
+			item.State = ItemStateFiltered
+			item.Reason = "preventively filtered because filtering failed"
+			return
+		}
+
+		match, err := filter.Match(value)
 
 		if err != nil {
 			log.Errorf("failed to apply filter: %s", err)
